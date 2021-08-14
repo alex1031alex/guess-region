@@ -17,7 +17,7 @@ function App() {
     <div className="app">
       <Header />
       <main className="app__main">
-        <Map />
+        <Map gameStatus={gameStatus} />
         {gameStatus === GameStatus.UNSTARTED ?
           <GameRules onStartButtonClick={startGame} /> : ``
         }

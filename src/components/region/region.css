@@ -4,5 +4,25 @@
 }
 
 .region--initial {
-  fill: #959595;
+  fill: var(--gray);
+}
+
+.region--on-first {
+  fill: var(--green);
+}
+
+.region--on-second {
+  fill: var(--yellow);
+}
+
+.region--on-third {
+  fill: var(--orange);
+}
+
+.region--failed {
+  fill: var(--crimson);
+}
+
+.region--unguessed {
+  fill: var(--red);
 }
