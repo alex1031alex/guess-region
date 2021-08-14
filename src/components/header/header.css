@@ -1,0 +1,26 @@
+.header {
+  flex: 0 0 auto;
+  padding: 10px 0;
+  background-color: #fff;
+  border: 1px solid #535353;
+}
+
+.header__inner {
+  width: 700px;
+  margin: 0 auto;
+  padding: 0 10px;
+
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.header__logo {
+  width: 42px;
+  margin-right: 10px;
+}
+
+.header__title {
+  font-size: 28px;
+  text-align: center;
+}
+

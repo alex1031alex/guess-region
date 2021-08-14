@@ -1,23 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/header/header';
+import Footer from './components/footer/footer';
+import Map from './components/map/map';
+import GameRules from './components/game-rules/game-rules';
+import {useState} from 'react';
+
+import {GameStatus} from './const';
 
 function App() {
+  const [gameStatus, setGameStatus] = useState(GameStatus.UNSTARTED);
+  const startGame = () => {
+    setGameStatus(GameStatus.STARTED);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Header />
+      <main className="app__main">
+        <Map />
+        {gameStatus === GameStatus.UNSTARTED ?
+          <GameRules onStartButtonClick={startGame} /> : ``
+        }
+      </main>
+      <Footer />
     </div>
   );
 }

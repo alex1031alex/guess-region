@@ -1,0 +1,8 @@
+.region {
+  stroke: #000;
+  stroke-width: 0.26px;
+}
+
+.region--initial {
+  fill: #959595;
+}
