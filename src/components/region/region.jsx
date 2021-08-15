@@ -7,7 +7,6 @@ import {GameStatus, RegionStatus} from '../../const';
 
 const Region = (props) => {
   const {children, id, gameStatus} = props;
-  console.log(gameStatus);
   const [regionStatus, setRegionStatus] = useState(RegionStatus.INITIAL);
   const onClick = () => {
     if (gameStatus !== GameStatus.STARTED) {

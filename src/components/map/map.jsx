@@ -9,7 +9,7 @@ const {outlines} = regionData;
 const Map = (props) => {
   const {gameStatus} = props;
 
-  return <div className="map">
+  return <section className="map">
     		    <svg width="700" height="700" viewBox="0 0 200 200" id="svg6055">
               {outlines.map((outline) => {
                 return <Region key={outline.id} id={outline.id} gameStatus={gameStatus}>
@@ -17,7 +17,7 @@ const Map = (props) => {
                 </Region>
               })}
             </svg>
-  </div>;
+  </section>;
 };
 
 export default Map;
