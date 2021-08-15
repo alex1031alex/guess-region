@@ -1,16 +1,10 @@
 import React from 'react';
 import './region.css';
 
-import {GameStatus} from '../../const';
-
 const Region = (props) => {
-  const {children, id, gameStatus, onRegionClick, getMyStatus} = props;
+  const {children, id, onRegionClick, getMyStatus} = props;
   const status = getMyStatus(id);
   const onClick = () => {
-    if (gameStatus !== GameStatus.STARTED) {
-      return;
-    }
-
     onRegionClick(id);
   };
 

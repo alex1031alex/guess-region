@@ -64,31 +64,31 @@ function App() {
       }
 
     if (playingRegion === regionId) {
-      if (playingRegionStatus === RegionStatus.FAILED) {
-        setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.UNGUESSED});
-      } else {
-        switch (failedTryCount) {
-          case 0: {
-            setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_FIRST_TRY})
-            break;
-          }
-          case 1: {
-            setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_SECOND_TRY})
-            break;
-          }
-          case 2: {
-            setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_THIRD_TRY})
-            break;
-          }
-          default: {
-            return;
-          }
+      switch (failedTryCount) {
+        case 0: {
+          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_FIRST_TRY})
+          break;
+        }
+        case 1: {
+          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_SECOND_TRY})
+          break;
+        }
+        case 2: {
+          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_THIRD_TRY})
+          break;
+        }
+        default: {
+          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.UNGUESSED});
         }
       }
-
+      
       excludeRegionFromGame(playingRegion);
       failedTryCount = 0;
-      setPlayingRegion(getRandomRegion());
+
+      if (regionsInGame.length !== 0) {
+        setPlayingRegion(getRandomRegion());
+      }
+      
       return;
     }
 
@@ -108,7 +108,7 @@ function App() {
     <div className="app">
       <Header />
       <main className="app__main">
-        <Map gameStatus={gameStatus} onRegionClick={onRegionClick} getRegionStatus={getRegionStatusById} />
+        <Map onRegionClick={onRegionClick} getRegionStatus={getRegionStatusById} />
         {gameStatus === GameStatus.UNSTARTED ?
           <GameRules onStartButtonClick={startGame} /> : ``
         }
