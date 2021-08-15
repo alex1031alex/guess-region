@@ -6,8 +6,8 @@ import GameRules from './components/game-rules/game-rules';
 import Info from './components/info/info';
 import {useState} from 'react';
 
-import {GameStatus} from './const';
-import {regionIds} from './data/region-data';
+import {GameStatus, RegionStatus} from './const';
+import {regionIds, createIdToStatusMap} from './data/region-data';
 
 function App() {
   const [gameStatus, setGameStatus] = useState(GameStatus.UNSTARTED);
@@ -23,11 +23,21 @@ function App() {
     return playingRegions[randomIndex];
   };
 
+  const initialRegionsStatus = createIdToStatusMap();
+  const [regionsStatus, setRegionsStatus] = useState(initialRegionsStatus);
+  const getRegionStatusById = (id) => {
+    return regionsStatus[id];
+  };
+
+  const onRegionClick = (regionId) => {
+    setRegionsStatus({...regionsStatus, [regionId]: RegionStatus.FAILED});
+  };
+
   return (
     <div className="app">
       <Header />
       <main className="app__main">
-        <Map gameStatus={gameStatus} />
+        <Map gameStatus={gameStatus} onRegionClick={onRegionClick} getRegionStatus={getRegionStatusById} />
         {gameStatus === GameStatus.UNSTARTED ?
           <GameRules onStartButtonClick={startGame} /> : ``
         }

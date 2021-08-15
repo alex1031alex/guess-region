@@ -1,23 +1,21 @@
 import React from 'react';
 import './region.css';
-import {useState} from 'react';
 
-import {GameStatus, RegionStatus} from '../../const';
-
+import {GameStatus} from '../../const';
 
 const Region = (props) => {
-  const {children, id, gameStatus} = props;
-  const [regionStatus, setRegionStatus] = useState(RegionStatus.INITIAL);
+  const {children, id, gameStatus, onRegionClick, getMyStatus} = props;
+  const status = getMyStatus(id);
   const onClick = () => {
     if (gameStatus !== GameStatus.STARTED) {
       return;
     }
 
-    setRegionStatus(RegionStatus.GUESSED_ON_SECOND_TRY);
+    onRegionClick(id);
   };
 
   return <g 
-    className={`region region--${regionStatus}`} 
+    className={`region region--${status}`} 
     id={id}
     onClick={onClick}
   >

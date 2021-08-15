@@ -1,3 +1,5 @@
+import {RegionStatus} from "../const";
+
 export const regionData = {
   title: "Smolensk",
   outlines: [
@@ -163,6 +165,17 @@ export const createIdToNameMap = () => {
   });
 
   return idToName;
+};
+
+export const createIdToStatusMap = () => {
+  const idToStatus = {};
+  const {outlines} = regionData;
+
+  outlines.forEach((item) => {
+    idToStatus[item.id] = RegionStatus.INITIAL;
+  });
+
+  return idToStatus;
 };
 
 export const regionIds = regionData.outlines.map((item) => item.id);
