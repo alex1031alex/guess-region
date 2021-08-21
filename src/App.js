@@ -51,7 +51,7 @@ function App() {
     alert(`Game finished!`);
   };
 
-  const onRegionClick = (regionId) => {
+  const handleRegionClick = (regionId) => {
     if (gameStatus !== GameStatus.STARTED) {
       return;
     }
@@ -108,7 +108,7 @@ function App() {
     <div className="app">
       <Header />
       <main className="app__main">
-        <Map onRegionClick={onRegionClick} getRegionStatus={getRegionStatusById} />
+        <Map handleRegionClick={handleRegionClick} getRegionStatus={getRegionStatusById} />
         {gameStatus === GameStatus.UNSTARTED ?
           <GameRules onStartButtonClick={startGame} /> : ``
         }

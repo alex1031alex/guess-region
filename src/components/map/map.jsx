@@ -7,7 +7,7 @@ import {regionData} from '../../data/region-data.js';
 const {outlines} = regionData;
 
 const Map = (props) => {
-  const {onRegionClick, getRegionStatus} = props;
+  const {handleRegionClick, getRegionStatus} = props;
 
   return <section className="map">
     		    <svg width="700" height="700" viewBox="0 0 200 200" id="svg6055">
@@ -15,7 +15,7 @@ const Map = (props) => {
                 return <Region 
                   key={outline.id}
                   id={outline.id}
-                  onRegionClick={onRegionClick}
+                  onRegionClick={handleRegionClick}
                   getMyStatus={getRegionStatus}
                 >
                   <path d={outline.d}></path>
