@@ -5,6 +5,7 @@
 
 .region--initial {
   fill: var(--gray);
+  cursor: pointer;
 }
 
 .region--on-first {
@@ -21,6 +22,7 @@
 
 .region--failed {
   fill: var(--crimson);
+  cursor: pointer;
 }
 
 .region--unguessed {
