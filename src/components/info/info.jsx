@@ -1,15 +1,16 @@
 import React from 'react';
 import Question from '../question/question';
+import Result from '../result/result';
 import './info.css';
 
 const Info = (props) => {
-  const {playingRegionId} = props;
+  const {playingRegionId, isGameFinished} = props;
  
   return (
     <section className="info">
-      <Question playingRegionId={playingRegionId}></Question>
+      {!isGameFinished ? <Question playingRegionId={playingRegionId} /> : ``}
+      <Result isGameFinished={isGameFinished} />
     </section>
-
   );
 };
 

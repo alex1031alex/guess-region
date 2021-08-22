@@ -134,7 +134,10 @@ function App() {
           <GameRules onStartButtonClick={startGame} /> : ``
         }
         {gameStatus !== GameStatus.UNSTARTED ? 
-          <Info playingRegionId={playingRegion} /> : ``
+          <Info
+            playingRegionId={playingRegion}
+            isGameFinished={gameStatus===GameStatus.FINISHED}
+          /> : ``
         }
         {message ? <Tooltip message={message.text} coordX={message.x} coordY={message.y} /> : ``}
         

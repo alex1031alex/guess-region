@@ -2,13 +2,13 @@
   width: 100%;
 }
 
-.info > * {
+.info__item {
   width: 50%;
-  padding: 0.5rem 0;
+  padding: 0.5rem;
   margin: 5px auto 0 auto;
   font-size: 1.5rem;
+  color: white;
   background-color: var(--teal);
-  text-align: center;
   text-transform: uppercase;
   font-style: italic;
 };
