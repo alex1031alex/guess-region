@@ -4,10 +4,15 @@ import Footer from './components/footer/footer';
 import Map from './components/map/map';
 import GameRules from './components/game-rules/game-rules';
 import Info from './components/info/info';
+import Tooltip from './components/tooltip/tooltip';
 import {useState, useEffect} from 'react';
 
 import {GameStatus, RegionStatus} from './const';
 import {regionIds, createIdToStatusMap} from './data/region-data';
+
+const SUCCESS_MESSAGE = `Вы угадали!`;
+const MISTAKE_MESSAGE = `Нет, это не он!`;
+const SHOW_MESSAGE_TIME = 500;
 
 const TIMEOUT_BEFORE_GAME_FINISH = 600;
 let regionsInGame = [...regionIds];
@@ -51,7 +56,19 @@ function App() {
     alert(`Game finished!`);
   };
 
-  const handleRegionClick = (regionId) => {
+  const [message, setMessage] = useState(null);
+  const showMessage = (text, coordX, coordY) => {
+    const x = `${coordX}px`;
+    const y = `${coordY}px`;
+
+    setMessage({text, x, y});
+ 
+    setTimeout(() => {
+      setMessage(null);
+    }, SHOW_MESSAGE_TIME);
+  };
+
+  const handleRegionClick = (regionId, coordX, coordY) => {
     if (gameStatus !== GameStatus.STARTED) {
       return;
     }
@@ -66,22 +83,25 @@ function App() {
     if (playingRegion === regionId) {
       switch (failedTryCount) {
         case 0: {
-          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_FIRST_TRY})
+          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_FIRST_TRY});
+          showMessage(SUCCESS_MESSAGE, coordX, coordY);
           break;
         }
         case 1: {
-          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_SECOND_TRY})
+          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_SECOND_TRY});
+          showMessage(SUCCESS_MESSAGE, coordX, coordY);
           break;
         }
         case 2: {
-          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_THIRD_TRY})
+          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_THIRD_TRY});
+          showMessage(SUCCESS_MESSAGE, coordX, coordY);
           break;
         }
         default: {
           setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.UNGUESSED});
         }
       }
-      
+
       excludeRegionFromGame(playingRegion);
       failedTryCount = 0;
 
@@ -96,8 +116,9 @@ function App() {
       return;
     }
 
+    showMessage(MISTAKE_MESSAGE, coordX, coordY);
     failedTryCount++;
-    
+
     if (failedTryCount >= 3) {
       setRegionsStatus(
         {...regionsStatus, [playingRegion]: RegionStatus.FAILED});
@@ -115,6 +136,8 @@ function App() {
         {gameStatus !== GameStatus.UNSTARTED ? 
           <Info playingRegionId={playingRegion} /> : ``
         }
+        {message ? <Tooltip message={message.text} coordX={message.x} coordY={message.y} /> : ``}
+        
       </main>
       <Footer />
     </div>

@@ -1,0 +1,29 @@
+.tooltip {
+  --tooltip-bg-color: #fff;
+  position: absolute;	
+	box-sizing: border-box;
+  min-width: 45px;
+	max-width: 150px;
+	padding: 0.4rem 0.6rem;
+	border-radius: 10px;
+	background-color: var(--tooltip-bg-color);
+	transform: translate(-35px, 20px);
+}
+
+.tooltip::before {
+	content: '';
+	position: absolute;	
+	width: 0px;
+	height: 0px;
+	border-top-width: 0px;
+	border-bottom-width: 32px;
+	border-left-width: 12px;
+	border-right-width: 0px;
+	border-style: solid;
+	border-left-color: transparent;
+	border-right-color: transparent;
+	border-bottom-color: var(--tooltip-bg-color);
+	top: -22px;
+	left: 20px;
+	transform: rotate(15deg);
+}
