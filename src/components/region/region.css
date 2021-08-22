@@ -8,6 +8,14 @@
   cursor: pointer;
 }
 
+.region--initial:hover {
+  opacity: 0.8;
+}
+
+.region--initial:active {
+  opacity: 0.4;
+}
+
 .region--on-first {
   fill: var(--green);
 }
