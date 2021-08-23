@@ -8,7 +8,7 @@ const Result = (props) => {
       <p className="result__text">Ваш {isGameFinished ? `финальный` : `текущий`} результат</p>
       <p>
         <span className="result__value">
-          {resultValue || 0}
+          {resultValue}
         </span>%
       </p>
     </div>

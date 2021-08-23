@@ -4,12 +4,12 @@ import Result from '../result/result';
 import './info.css';
 
 const Info = (props) => {
-  const {playingRegionId, isGameFinished} = props;
+  const {playingRegionId, isGameFinished, resultValue} = props;
  
   return (
     <section className="info">
       {!isGameFinished ? <Question playingRegionId={playingRegionId} /> : ``}
-      <Result isGameFinished={isGameFinished} />
+      <Result isGameFinished={isGameFinished} resultValue={resultValue} />
     </section>
   );
 };

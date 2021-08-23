@@ -13,8 +13,13 @@ import {regionIds, createIdToStatusMap} from './data/region-data';
 const SUCCESS_MESSAGE = `Вы угадали!`;
 const MISTAKE_MESSAGE = `Нет, это не он!`;
 const SHOW_MESSAGE_TIME = 500;
-
 const TIMEOUT_BEFORE_GAME_FINISH = 600;
+const PersentageForRightAnswer = {
+  FROM_FIRST_TIME: 4,
+  FROM_SECOND_TIME: 3,
+  FROM_THIRD_TIME: 1
+};
+
 let regionsInGame = [...regionIds];
 let failedTryCount = 0;
 
@@ -67,6 +72,7 @@ function App() {
       setMessage(null);
     }, SHOW_MESSAGE_TIME);
   };
+  const [userResult, setUserResult] = useState(0);
 
   const handleRegionClick = (regionId, coordX, coordY) => {
     if (gameStatus !== GameStatus.STARTED) {
@@ -85,16 +91,26 @@ function App() {
         case 0: {
           setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_FIRST_TRY});
           showMessage(SUCCESS_MESSAGE, coordX, coordY);
+          setUserResult((currentUserResult) => {
+            return currentUserResult + PersentageForRightAnswer.FROM_FIRST_TIME;
+          });
           break;
         }
         case 1: {
           setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_SECOND_TRY});
           showMessage(SUCCESS_MESSAGE, coordX, coordY);
+          setUserResult((currentUserResult) => {
+            return currentUserResult + PersentageForRightAnswer
+            .FROM_SECOND_TIME;
+          });
           break;
         }
         case 2: {
           setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_THIRD_TRY});
           showMessage(SUCCESS_MESSAGE, coordX, coordY);
+          setUserResult((currentUserResult) => {
+            return currentUserResult + PersentageForRightAnswer.FROM_THIRD_TIME;
+          });
           break;
         }
         default: {
@@ -137,10 +153,14 @@ function App() {
           <Info
             playingRegionId={playingRegion}
             isGameFinished={gameStatus===GameStatus.FINISHED}
+            resultValue={userResult}
           /> : ``
         }
-        {message ? <Tooltip message={message.text} coordX={message.x} coordY={message.y} /> : ``}
-        
+        {message ? <Tooltip 
+          message={message.text} 
+          coordX={message.x} 
+          coordY={message.y} 
+        /> : ``}
       </main>
       <Footer />
     </div>
