@@ -5,6 +5,7 @@ import Map from './components/map/map';
 import GameRules from './components/game-rules/game-rules';
 import Info from './components/info/info';
 import Tooltip from './components/tooltip/tooltip';
+import FinalMessage from './components/final-message/final-message';
 import {useState, useEffect} from 'react';
 
 import {GameStatus, RegionStatus} from './const';
@@ -161,6 +162,7 @@ function App() {
           coordX={message.x} 
           coordY={message.y} 
         /> : ``}
+        <FinalMessage />
       </main>
       <Footer />
     </div>
