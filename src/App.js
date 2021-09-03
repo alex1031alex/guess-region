@@ -3,9 +3,9 @@ import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import Map from './components/map/map';
 import GameRules from './components/game-rules/game-rules';
+import FinalMessage from './components/final-message/final-message';
 import Info from './components/info/info';
 import Tooltip from './components/tooltip/tooltip';
-import FinalMessage from './components/final-message/final-message';
 import {useState, useEffect} from 'react';
 
 import {GameStatus, RegionStatus} from './const';
@@ -59,7 +59,9 @@ function App() {
 
   const finishGame = () => {
     setGameStatus(GameStatus.FINISHED);
-    alert(`Game finished!`);
+  };
+
+  const restartGame = () => {
   };
 
   const [message, setMessage] = useState(null);
@@ -157,12 +159,16 @@ function App() {
             resultValue={userResult}
           /> : ``
         }
+        {
+          gameStatus === GameStatus.FINISHED ?
+          <FinalMessage onRestartButtonClick={restartGame}></FinalMessage> : ``
+        }
         {message ? <Tooltip 
           message={message.text} 
           coordX={message.x} 
           coordY={message.y} 
         /> : ``}
-        <FinalMessage />
+
       </main>
       <Footer />
     </div>

@@ -1,62 +1,33 @@
-.popup {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-}
-
-.popup__inner {
-  position: fixed;
-  top: 20%;
-  left: 30%;
-  width: 40%;
-  max-height: 572px;
-  padding: 10px;
-  font-family: Helvetica, Arial, sans-serif;
-  color: #fff;
-  background-color: rgba(53, 53, 53, 0.9);
-}
-
-.popup__title {
+.game-rules__title {
   text-align: center;
   font-size: 26px;
   margin-bottom: 20px;
 }
 
-.popup__text {
+.game-rules__text {
   font-size: 22px;
 }
 
-.popup__text:not(:last-child) {
+.game-rules__text:not(:last-child) {
   margin-bottom: 15px;
 }
 
-.popup__text--green {
+.game-rules__text--green {
   color: var(--green);
 }
 
-.popup__text--yellow {
+.game-rules__text--yellow {
   color: var(--yellow);
 }
 
-.popup__text--orange {
+.game-rules__text--orange {
   color: var(--orange);
 }
 
-.popup__text--crimson {
+.game-rules__text--crimson {
   color: var(--crimson);
 }
 
-.popup__text--red {
+.game-rules__text--red {
   color: var(--red);
-}
-
-.popup__btn {
-  padding: 12px;
-  font-size: 18px;
-  font-weight: 800;
-  color: #fff;
-  border: none;
-  background-color: var(--light-blue);
-  cursor: pointer;
 }

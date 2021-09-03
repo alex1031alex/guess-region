@@ -1,17 +1,18 @@
 import React from 'react';
-import './final-message.css'
+import './final-message.css';
 
-const FinalMessage = () => {
+import Popup from '../popup/popup';
+import Button from '../button/button';
+
+const FinalMessage = (props) => {
+  const {onRestartButtonClick} = props;
   return (
-    <section className="popup final-message">
-      <div className="popup__inner">
-        <p className="popup__title">Ваш финальный результат 97%</p>
-        <p className="popup__text">Отличный результат! Вы хорошо знаете Смоленскую область
-        </p>
-        <button className="popup__btn popup__btn--restart">Попробовать ещё раз
-        </button>
-      </div>
-    </section>
+    <Popup>
+      <h2 className="final-message__title">Ваш финальный результат: 97%</h2>
+      <p className="final-message__text">Отличный результат! Вы хорошо знаете Смоленскую область
+      </p>
+      <Button onClick={onRestartButtonClick}>Попробовать еще раз</Button>
+    </Popup>
   ); 
 };
 
