@@ -31,7 +31,7 @@ function App() {
   };
 
   const initialRegionsStatus = createIdToStatusMap();
-  const [regionsStatus, setRegionsStatus] = useState(initialRegionsStatus);
+  const [regionsStatus, setRegionsStatus] = useState({...initialRegionsStatus});
 
   useEffect(() => {
     if (regionsInGame.length === 0) {
@@ -61,9 +61,6 @@ function App() {
     setGameStatus(GameStatus.FINISHED);
   };
 
-  const restartGame = () => {
-  };
-
   const [message, setMessage] = useState(null);
   const showMessage = (text, coordX, coordY) => {
     const x = `${coordX}px`;
@@ -76,6 +73,18 @@ function App() {
     }, SHOW_MESSAGE_TIME);
   };
   const [score, setScore] = useState(0);
+
+  const restartGame = () => {
+    setGameStatus(GameStatus.UNSTARTED);
+
+    regionsInGame = [...regionIds];
+    failedTryCount = 0;
+
+    setRegionsStatus({...initialRegionsStatus});
+    setPlayingRegion(null);
+    setMessage(null);
+    setScore(0);
+  };
 
   const handleRegionClick = (regionId, coordX, coordY) => {
     if (gameStatus !== GameStatus.STARTED) {
