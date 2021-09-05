@@ -75,7 +75,7 @@ function App() {
       setMessage(null);
     }, SHOW_MESSAGE_TIME);
   };
-  const [userResult, setUserResult] = useState(0);
+  const [score, setScore] = useState(0);
 
   const handleRegionClick = (regionId, coordX, coordY) => {
     if (gameStatus !== GameStatus.STARTED) {
@@ -94,16 +94,16 @@ function App() {
         case 0: {
           setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_FIRST_TRY});
           showMessage(SUCCESS_MESSAGE, coordX, coordY);
-          setUserResult((currentUserResult) => {
-            return currentUserResult + PersentageForRightAnswer.FROM_FIRST_TIME;
+          setScore((currentScore) => {
+            return currentScore + PersentageForRightAnswer.FROM_FIRST_TIME;
           });
           break;
         }
         case 1: {
           setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_SECOND_TRY});
           showMessage(SUCCESS_MESSAGE, coordX, coordY);
-          setUserResult((currentUserResult) => {
-            return currentUserResult + PersentageForRightAnswer
+          setScore((currentScore) => {
+            return currentScore + PersentageForRightAnswer
             .FROM_SECOND_TIME;
           });
           break;
@@ -111,8 +111,8 @@ function App() {
         case 2: {
           setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_THIRD_TRY});
           showMessage(SUCCESS_MESSAGE, coordX, coordY);
-          setUserResult((currentUserResult) => {
-            return currentUserResult + PersentageForRightAnswer.FROM_THIRD_TIME;
+          setScore((currentScore) => {
+            return currentScore + PersentageForRightAnswer.FROM_THIRD_TIME;
           });
           break;
         }
@@ -156,14 +156,14 @@ function App() {
           <Info
             playingRegionId={playingRegion}
             isGameFinished={gameStatus===GameStatus.FINISHED}
-            resultValue={userResult}
+            score={score}
           /> : ``
         }
         {
           gameStatus === GameStatus.FINISHED ?
           <FinalMessage
             onRestartButtonClick={restartGame}
-            score={userResult}
+            score={score}
           ></FinalMessage> : ``
         }
         {message ? <Tooltip 

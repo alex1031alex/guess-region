@@ -4,12 +4,12 @@ import Score from '../score/score';
 import './info.css';
 
 const Info = (props) => {
-  const {playingRegionId, isGameFinished, resultValue} = props;
+  const {playingRegionId, isGameFinished, score} = props;
  
   return (
     <section className="info">
       {!isGameFinished ? <Question playingRegionId={playingRegionId} /> : ``}
-      <Score value={resultValue} />
+      <Score value={score} />
     </section>
   );
 };
