@@ -1,6 +1,6 @@
 import React from 'react';
 import Question from '../question/question';
-import Result from '../result/result';
+import Score from '../score/score';
 import './info.css';
 
 const Info = (props) => {
@@ -9,7 +9,7 @@ const Info = (props) => {
   return (
     <section className="info">
       {!isGameFinished ? <Question playingRegionId={playingRegionId} /> : ``}
-      <Result isGameFinished={isGameFinished} resultValue={resultValue} />
+      <Score value={resultValue} />
     </section>
   );
 };
