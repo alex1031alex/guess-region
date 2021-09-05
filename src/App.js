@@ -161,7 +161,10 @@ function App() {
         }
         {
           gameStatus === GameStatus.FINISHED ?
-          <FinalMessage onRestartButtonClick={restartGame}></FinalMessage> : ``
+          <FinalMessage
+            onRestartButtonClick={restartGame}
+            score={userResult}
+          ></FinalMessage> : ``
         }
         {message ? <Tooltip 
           message={message.text} 
