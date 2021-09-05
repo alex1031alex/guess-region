@@ -9,7 +9,7 @@ const Question = (props) => {
   const {playingRegionId} = props;
 
   return (
-    <p className="info__item info__item--question">
+    <p className="question">
       Где находится {idToName[playingRegionId]} район?
     </p>
   );
