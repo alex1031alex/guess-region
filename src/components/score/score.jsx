@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './score.css';
 
 const Score = (props) => {
@@ -13,6 +14,10 @@ const Score = (props) => {
       </p>
     </div>
   );
+};
+
+Score.propTypes = {
+  value: PropTypes.number,
 };
 
 export default Score;

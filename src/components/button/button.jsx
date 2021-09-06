@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './button.css';
 
 const Button = (props) => {
@@ -9,6 +10,14 @@ const Button = (props) => {
       {children}
     </button>
   );
+};
+
+Button.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element,
+  ]),
+  onClick: PropTypes.func,
 };
 
 export default Button;

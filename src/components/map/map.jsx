@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Region from '../region/region';
 import './map.css';
 
@@ -23,6 +25,11 @@ const Map = (props) => {
               })}
             </svg>
   </section>;
+};
+
+Map.propTypes = {
+  handleRegionClick: PropTypes.func,
+  getRegionStatus: PropTypes.func,
 };
 
 export default Map;

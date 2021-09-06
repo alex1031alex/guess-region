@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import './question.css';
 
 import {createIdToNameMap} from '../../data/region-data';
@@ -13,6 +15,10 @@ const Question = (props) => {
       Где находится {idToName[playingRegionId]} район?
     </p>
   );
+};
+
+Question.propTypes = {
+  playingRegionId: PropTypes.string,
 };
 
 export default Question;

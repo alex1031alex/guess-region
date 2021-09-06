@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './region.css';
 
 const Region = (props) => {
@@ -15,6 +16,13 @@ const Region = (props) => {
   >
     {children}
   </g>;
+};
+
+Region.propTypes = {
+  children: PropTypes.element.isRequired,
+  id: PropTypes.string,
+  onRegionClick: PropTypes.func,
+  getMyStatus: PropTypes.func,
 };
 
 export default Region;

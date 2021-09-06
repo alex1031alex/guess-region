@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './tooltip.css';
 
 const Tooltip = (props) => {
@@ -10,6 +11,12 @@ const Tooltip = (props) => {
       </p>
     </div>
   );
+};
+
+Tooltip.propTypes = {
+  message: PropTypes.string,
+  coordX: PropTypes.string,
+  coordY: PropTypes.string,
 };
 
 export default Tooltip;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './final-message.css';
 
 import Popup from '../popup/popup';
@@ -32,12 +33,19 @@ const FinalMessage = (props) => {
   const {onRestartButtonClick, score} = props;
   return (
     <Popup>
-      <h2 className="final-message__title">Ваш финальный результат: {score}%</h2>
-      <p className="final-message__text">{getReview(score)}
-      </p>
-      <Button onClick={onRestartButtonClick}>Попробовать еще раз</Button>
+      <React.Fragment>
+        <h2 className="final-message__title">Ваш финальный результат: {score}%</h2>
+        <p className="final-message__text">{getReview(score)}
+        </p>
+        <Button onClick={onRestartButtonClick}>Попробовать еще раз</Button>
+      </React.Fragment>
     </Popup>
   ); 
+};
+
+FinalMessage.propTypes = {
+  onRestartButtonClick: PropTypes.func,
+  score: PropTypes.number,
 };
 
 export default FinalMessage;
