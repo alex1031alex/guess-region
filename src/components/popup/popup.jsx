@@ -5,11 +5,13 @@ import './popup.css';
 const Popup = (props) => {
   const {children} = props;
 
-  return <section className="popup">
-    <div className="popup__inner">
-      {children}
-    </div>
-  </section>
+  return (
+    <section className="popup">
+      <div className="popup__inner">
+        {children}
+      </div>
+    </section>
+  ); 
 };
 
 Popup.propTypes = {

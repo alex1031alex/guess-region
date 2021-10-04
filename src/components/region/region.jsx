@@ -9,13 +9,15 @@ const Region = (props) => {
     onRegionClick(id, evt.pageX, evt.pageY);
   };
 
-  return <g 
-    className={`region region--${status}`} 
-    id={id}
-    onClick={onClick}
-  >
-    {children}
-  </g>;
+  return (
+    <g 
+      className={`region region--${status}`} 
+      id={id}
+      onClick={onClick}
+    >
+      {children}
+    </g>
+  ); 
 };
 
 Region.propTypes = {
