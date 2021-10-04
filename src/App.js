@@ -23,30 +23,31 @@ const PersentageForRightAnswer = {
 
 let regionsInGame = [...regionIds];
 let failedTryCount = 0;
+const initialRegionsStatus = createIdToStatusMap();
+
+const getRandomRegion = () => {
+  const maxIndex = regionsInGame.length - 1;
+  const randomIndex = Math.floor(Math.random() * (maxIndex + 1));
+
+  return regionsInGame[randomIndex];
+};
 
 function App() {
   const [gameStatus, setGameStatus] = useState(GameStatus.UNSTARTED);
+  const [regionsStatus, setRegionsStatus] = useState({...initialRegionsStatus});
+  const [playingRegion, setPlayingRegion] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [score, setScore] = useState(0);
+
   const excludeRegionFromGame = (region) => {
     regionsInGame = regionsInGame.filter((regionInGame) => regionInGame !== region);
   };
-
-  const initialRegionsStatus = createIdToStatusMap();
-  const [regionsStatus, setRegionsStatus] = useState({...initialRegionsStatus});
 
   useEffect(() => {
     if (regionsInGame.length === 0) {
       setTimeout(finishGame, TIMEOUT_BEFORE_GAME_FINISH);
     }
   }, [regionsStatus]);
-
-  const [playingRegion, setPlayingRegion] = useState(null);
-  
-  const getRandomRegion = () => {
-    const maxIndex = regionsInGame.length - 1;
-    const randomIndex = Math.floor(Math.random() * (maxIndex + 1));
-
-    return regionsInGame[randomIndex];
-  };
 
   const getRegionStatusById = (id) => {
     return regionsStatus[id];
@@ -61,7 +62,6 @@ function App() {
     setGameStatus(GameStatus.FINISHED);
   };
 
-  const [message, setMessage] = useState(null);
   const showMessage = (text, coordX, coordY) => {
     const x = `${coordX}px`;
     const y = `${coordY}px`;
@@ -72,7 +72,6 @@ function App() {
       setMessage(null);
     }, SHOW_MESSAGE_TIME);
   };
-  const [score, setScore] = useState(0);
 
   const restartGame = () => {
     setGameStatus(GameStatus.UNSTARTED);
