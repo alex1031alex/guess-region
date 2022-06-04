@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/guess-region/static/css/main.c85fbba0.chunk.css",
-    "main.js": "/guess-region/static/js/main.5b0ef9fa.chunk.js",
-    "main.js.map": "/guess-region/static/js/main.5b0ef9fa.chunk.js.map",
+    "main.css": "/guess-region/static/css/main.f1e00cf9.chunk.css",
+    "main.js": "/guess-region/static/js/main.77932e04.chunk.js",
+    "main.js.map": "/guess-region/static/js/main.77932e04.chunk.js.map",
     "runtime-main.js": "/guess-region/static/js/runtime-main.c33f406d.js",
     "runtime-main.js.map": "/guess-region/static/js/runtime-main.c33f406d.js.map",
     "static/js/2.a627b857.chunk.js": "/guess-region/static/js/2.a627b857.chunk.js",
@@ -10,13 +10,13 @@
     "static/js/3.b1d54e32.chunk.js": "/guess-region/static/js/3.b1d54e32.chunk.js",
     "static/js/3.b1d54e32.chunk.js.map": "/guess-region/static/js/3.b1d54e32.chunk.js.map",
     "index.html": "/guess-region/index.html",
-    "static/css/main.c85fbba0.chunk.css.map": "/guess-region/static/css/main.c85fbba0.chunk.css.map",
+    "static/css/main.f1e00cf9.chunk.css.map": "/guess-region/static/css/main.f1e00cf9.chunk.css.map",
     "static/js/2.a627b857.chunk.js.LICENSE.txt": "/guess-region/static/js/2.a627b857.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.c33f406d.js",
     "static/js/2.a627b857.chunk.js",
-    "static/css/main.c85fbba0.chunk.css",
-    "static/js/main.5b0ef9fa.chunk.js"
+    "static/css/main.f1e00cf9.chunk.css",
+    "static/js/main.77932e04.chunk.js"
   ]
 }
