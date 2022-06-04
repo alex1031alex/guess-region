@@ -4,6 +4,7 @@ import './tooltip.css';
 
 const Tooltip = (props) => {
   const {message, coordX, coordY} = props;
+  console.log(props);
   console.log(coordX);
   return (
     <div className="tooltip" style={{left: coordX, top: coordY}}>
