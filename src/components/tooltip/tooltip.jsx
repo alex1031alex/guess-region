@@ -7,7 +7,7 @@ const Tooltip = (props) => {
   console.log(props);
   console.log(coordX);
   return (
-    <div className="tooltip" style={{left: coordX, top: coordY}}>
+    <div className="tooltip" style={{position: "absolute", left: coordX, top: coordY}}>
       <p className="tooltip__text">
         {message}
       </p>
