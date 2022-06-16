@@ -86,7 +86,6 @@ function App() {
   };
 
   const handleRegionClick = (regionId, coordX, coordY) => {
-    console.log(coordX, "yaya");
     if (gameStatus !== GameStatus.STARTED) {
       return;
     }

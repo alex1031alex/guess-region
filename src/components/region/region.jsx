@@ -7,7 +7,6 @@ const Region = (props) => {
   const status = getMyStatus(id);
   const onClick = (evt) => {
     onRegionClick(id, evt.pageX, evt.pageY);
-    console.log(evt.pageX);
   };
 
   return (
