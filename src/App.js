@@ -13,7 +13,7 @@ import {regionIds, createIdToStatusMap} from './data/region-data';
 
 const SUCCESS_MESSAGE = `Вы угадали!`;
 const MISTAKE_MESSAGE = `Нет, это не он!`;
-const SHOW_MESSAGE_TIME = 500;
+const SHOW_MESSAGE_TIME = 10000;
 const TIMEOUT_BEFORE_GAME_FINISH = 600;
 const PersentageForRightAnswer = {
   FROM_FIRST_TIME: 4,
