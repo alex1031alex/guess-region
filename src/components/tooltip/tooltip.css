@@ -1,4 +1,4 @@
-.a-tooltip {
+.tooltip {
   --tooltip-bg-color: #fff;
   position: absolute;	
 	box-sizing: border-box;
@@ -10,7 +10,7 @@
 	transform: translate(-35px, 20px);
 }
 
-.a-tooltip::before {
+.tooltip::before {
 	content: '';
 	position: absolute;	
 	width: 0px;
