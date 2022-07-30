@@ -31,3 +31,13 @@
 .game-rules__text--red {
   color: var(--red);
 }
+
+@media(max-width: 760px) {
+  .game-rules__title {
+    font-size: 20px;
+  }
+
+  .game-rules__text {
+    font-size: 18px;
+  }
+}

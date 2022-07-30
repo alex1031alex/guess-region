@@ -13,7 +13,7 @@ const Map = (props) => {
 
   return (
     <section className="map">
-      <svg width="700" height="700" viewBox="0 0 200 200" id="svg6055">
+      <svg viewBox="0 0 200 200" id="svg6055">
         {outlines.map((outline) => {
           return <Region 
             key={outline.id}

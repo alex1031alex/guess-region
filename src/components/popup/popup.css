@@ -16,3 +16,17 @@
   color: #fff;
   background-color: rgba(53, 53, 53, 0.9);
 }
+
+@media(max-width: 760px) {
+  .popup__inner {
+    width: 80%;
+    left: 10%;
+  }
+}
+
+@media(max-width: 480px) {
+  .popup__inner {
+    width: 90%;
+    left: 5%;
+  }
+}

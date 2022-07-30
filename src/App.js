@@ -154,7 +154,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header />
+      {gameStatus !== GameStatus.STARTED && <Header />}
       <main className="app__main">
         <Map handleRegionClick={handleRegionClick} getRegionStatus={getRegionStatusById} />
         {gameStatus === GameStatus.UNSTARTED ?

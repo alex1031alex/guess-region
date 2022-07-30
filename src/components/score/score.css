@@ -1,4 +1,12 @@
 .score {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+@media(max-width: 760px) {
+  .score {
+    font-size: 1.2rem;
+  }
 }
