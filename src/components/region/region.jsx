@@ -1,11 +1,17 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import './region.css';
+import { RegionStatus } from '../../const';
 
 const Region = (props) => {
-  const {children, id, onRegionClick, getMyStatus} = props;
-  const status = getMyStatus(id);
+  const {children, id, onRegionClick} = props;
+  const status = useSelector((state) => state.entities[id].status);
+
   const onClick = (evt) => {
+    if (status !== RegionStatus.INITIAL && status !== RegionStatus.FAILED) {
+      return;
+    }
     onRegionClick(id, evt.pageX, evt.pageY);
   };
 
