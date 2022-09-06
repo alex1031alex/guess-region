@@ -18,3 +18,8 @@ export const ScoresForRightAnswer = {
   FROM_SECOND_TRY: 3,
   FROM_THIRD_TRY: 1
 };
+
+export const Message = {
+  SUCCESS: `Вы угадали!`,
+  MISTAKE: `Нет, это не он!`
+};
