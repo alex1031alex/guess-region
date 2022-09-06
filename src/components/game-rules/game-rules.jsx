@@ -1,12 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { gameStatusSet, nextQuestion } from '../../store/reducer';
+import { GameStatus } from '../../const';
 import './game-rules.css';
 
 import Popup from '../popup/popup';
 import Button from '../button/button';
 
 const GameRules = (props) => {
-  const {onStartButtonClick} = props;
+  const dispatch = useDispatch();
+  const onClick = () => {
+    dispatch(gameStatusSet(GameStatus.STARTED));
+    dispatch(nextQuestion());
+  }
 
   return (
     <Popup>
@@ -17,7 +24,7 @@ const GameRules = (props) => {
         </p>
         <p className="game-rules__text">После трех неверных попыток правильный район выделяется <span className="game-rules__text--crimson">малиновым</span> цветом, а после клика по нему, становится <span className="game-rules__text--red">красным</span>.
         </p>
-        <Button onClick={onStartButtonClick}>Начать тест</Button>
+        <Button onClick={onClick}>Начать тест</Button>
       </React.Fragment>
     </Popup>
   ); 

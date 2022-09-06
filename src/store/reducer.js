@@ -18,7 +18,7 @@ const rootSlice = createSlice({
   name: "root",
   initialState,
   reducers: {
-    gameInit(state, action) {
+    gameInit(state) {
       const newEntities = {};
 
       regionData.outlines.forEach((it) => {
@@ -31,6 +31,16 @@ const rootSlice = createSlice({
       });
 
       state.entities = newEntities;
+    },
+    gameReset(state) {
+      state.gameStatus = GameStatus.STARTED;
+      state.playingRegionId = null;
+      state.failedAttemptsCount = 0;
+      state.score = 0;
+
+      Object.values(state.entities).forEach((entity) => {
+        entity.status = RegionStatus.INITIAL;
+      })
     },
     gameStatusSet(state, action) {
       state.gameStatus = action.payload;
@@ -89,6 +99,7 @@ export const nextQuestion = () => (dispatch, getState) => {
 
 export const {
   gameInit,
+  gameReset,
   gameStatusSet,
   playingRegionIdSet,
   failedAttemptsCountInc,

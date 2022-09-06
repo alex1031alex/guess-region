@@ -13,7 +13,6 @@ import {GameStatus, RegionStatus, ScoresForRightAnswer} from './const';
 import {regionIds, createIdToStatusMap} from './data/region-data';
 import { 
   gameStatusSet, 
-  playingRegionIdSet, 
   nextQuestion, 
   regionStatusChanged, 
   failedAttemptsCountInc, 
@@ -29,17 +28,11 @@ const TIMEOUT_BEFORE_GAME_FINISH = 600;
 function App() {
   const [message, setMessage] = useState(null);
 
-  console.log(useSelector((state) => state.playingRegionId));
   const gameStatus = useSelector((state) => state.gameStatus);
   const playingRegion = useSelector((state) => state.entities[state.playingRegionId]);
   const failedAttemptsCount = useSelector((state) => state.failedAttemptsCount);
 
   const dispatch = useDispatch();
-
-  const startGame = () => {
-    dispatch(gameStatusSet(GameStatus.STARTED));
-    dispatch(nextQuestion());
-  };
 
   const showMessage = (text, coordX, coordY) => {
     const x = `${coordX}px`;
@@ -50,18 +43,6 @@ function App() {
     setTimeout(() => {
       setMessage(null);
     }, SHOW_MESSAGE_TIME);
-  };
-
-  const restartGame = () => {
-  //   setGameStatus(GameStatus.UNSTARTED);
-
-  //   regionsInGame = [...regionIds];
-  //   failedTryCount = 0;
-
-  //   setRegionsStatus({...initialRegionsStatus});
-  //   setPlayingRegion(null);
-  //   setMessage(null);
-  //   setScore(0);
   };
 
   const handleRegionClick = (regionId, coordX, coordY) => {
@@ -79,19 +60,21 @@ function App() {
         case 1: {
           dispatch(regionStatusChanged(regionId, RegionStatus.FROM_SECOND_TRY));
           dispatch(scoreIncreased(ScoresForRightAnswer.FROM_SECOND_TRY));
+          dispatch(failedAttemptsCountReset());
           break;
         }
         case 2: {
           dispatch(regionStatusChanged(regionId, RegionStatus.FROM_THIRD_TRY));
           dispatch(scoreIncreased(ScoresForRightAnswer.FROM_THIRD_TRY));
+          dispatch(failedAttemptsCountReset());
           break;
         }
         default: {
           dispatch(regionStatusChanged(regionId, RegionStatus.UNGUESSED));
+          dispatch(failedAttemptsCountReset());
         }
       }
 
-      dispatch(failedAttemptsCountReset());
       dispatch(nextQuestion());
     } else {
       if (playingRegion.status === RegionStatus.FAILED) {
@@ -161,14 +144,9 @@ function App() {
       {gameStatus !== GameStatus.STARTED && <Header />}
       <main className="app__main">
         <Map handleRegionClick={handleRegionClick} />
-        {gameStatus === GameStatus.UNSTARTED ?
-          <GameRules onStartButtonClick={startGame} /> : ``
-        }
+        {gameStatus === GameStatus.UNSTARTED ? <GameRules /> : ``}
         {gameStatus !== GameStatus.UNSTARTED ? <Info /> : ``}
-        {
-          gameStatus === GameStatus.FINISHED ?
-          <FinalMessage onRestartButtonClick={restartGame}></FinalMessage> : ``
-        }
+        {gameStatus === GameStatus.FINISHED ? <FinalMessage /> : ``}
         {message ? <Tooltip 
           message={message.text} 
           coordX={message.x} 

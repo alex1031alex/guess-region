@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import './final-message.css';
 
 import Popup from '../popup/popup';
 import Button from '../button/button';
+import { gameReset, nextQuestion } from '../../store/reducer';
 
 const getReview = (score) => {
   if (score === 100) {
@@ -30,16 +31,21 @@ const getReview = (score) => {
   return `Очень жаль, но Вы совсем не знаете Смоленскую область`;
 };
 
-const FinalMessage = (props) => {
-  const {onRestartButtonClick} = props;
+const FinalMessage = () => {
   const score = useSelector((state) => state.score);
+  const dispatch = useDispatch();
+  const onClick = () => {
+    dispatch(gameReset());
+    dispatch(nextQuestion());
+  };
+
   return (
     <Popup>
       <React.Fragment>
         <h2 className="final-message__title">Ваш финальный результат: {score}%</h2>
         <p className="final-message__text">{getReview(score)}
         </p>
-        <Button onClick={onRestartButtonClick}>Попробовать еще раз</Button>
+        <Button onClick={onClick}>Попробовать еще раз</Button>
       </React.Fragment>
     </Popup>
   ); 
