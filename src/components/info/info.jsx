@@ -7,15 +7,14 @@ import Score from '../score/score';
 import './info.css';
 import { GameStatus } from '../../const';
 
-const Info = (props) => {
-  const {score} = props;
+const Info = () => {
   const gameStatus = useSelector((state) => state.gameStatus);
   const isGameFinished = gameStatus === GameStatus.FINISHED;
 
   return (
     <section className="info">
       {!isGameFinished ? <Question /> : ``}
-      <Score value={score} />
+      <Score />
     </section>
   );
 };

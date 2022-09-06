@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import './final-message.css';
 
 import Popup from '../popup/popup';
@@ -30,7 +31,8 @@ const getReview = (score) => {
 };
 
 const FinalMessage = (props) => {
-  const {onRestartButtonClick, score} = props;
+  const {onRestartButtonClick} = props;
+  const score = useSelector((state) => state.score);
   return (
     <Popup>
       <React.Fragment>

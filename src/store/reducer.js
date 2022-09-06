@@ -1,6 +1,7 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { GameStatus, RegionStatus } from "../const";
 import { regionData } from "../data/region-data";
+import { getRandomElement } from "../utils";
 
 const adapter = createEntityAdapter({
   selectId: (region) => region.id
@@ -10,6 +11,7 @@ export const initialState = adapter.getInitialState({
   gameStatus: GameStatus.UNSTARTED,
   playingRegionId: null,
   failedAttemptsCount: 0,
+  score: 0,
 });
 
 const rootSlice = createSlice({
@@ -49,28 +51,21 @@ const rootSlice = createSlice({
         }
       }
     },
-    failedAttemptsCountInc(state, action) {
+    failedAttemptsCountInc(state) {
       state.failedAttemptsCount++;
 
       if (state.failedAttemptsCount === 3) {
         state.entities[state.playingRegionId].status = RegionStatus.FAILED;
       }
     },
-    failedAttemptsCountReset(state, action) {
+    failedAttemptsCountReset(state) {
       state.failedAttemptsCount = 0;
+    },
+    scoreIncreased(state, action) {
+      state.score += action.payload;
     }
   }
 });
-
-const getRandomRegion = (regions) => {
-  const maxIndex = regions.length - 1;
-  const randomIndex = Math.floor(Math.random() * (maxIndex + 1));
-
-  // console.log("random", regions, randomIndex, regions[randomIndex]);
-  return regions[randomIndex];
-};
-
-
 
 // Selectors
 export const {selectAll: selectRegions, selectById: selectRegionById} = adapter.getSelectors((state) => state);
@@ -88,7 +83,7 @@ export const nextQuestion = () => (dispatch, getState) => {
     return;
   }
 
-  const randomRegionId = getRandomRegion(activeRegions);
+  const randomRegionId = getRandomElement(activeRegions);
   dispatch(playingRegionIdSet(randomRegionId));
 };
 
@@ -99,6 +94,7 @@ export const {
   failedAttemptsCountInc,
   failedAttemptsCountReset,
   regionStatusChanged,
+  scoreIncreased,
 } = rootSlice.actions;
 
 export default rootSlice.reducer;
