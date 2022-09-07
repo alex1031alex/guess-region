@@ -77,26 +77,6 @@ const rootSlice = createSlice({
   }
 });
 
-// Selectors
-export const {selectAll: selectRegions, selectById: selectRegionById} = adapter.getSelectors((state) => state);
-
-export const selectPlayingRegions = (state) => {
-  return state.ids.filter((id) => state.entities[id].status === RegionStatus.INITIAL);
-}
-
-// Action
-export const nextQuestion = () => (dispatch, getState) => {
-  const activeRegions = selectPlayingRegions(getState());
-
-  if (activeRegions.length === 0) {
-    dispatch(gameStatusSet(GameStatus.FINISHED));
-    return;
-  }
-
-  const randomRegionId = getRandomElement(activeRegions);
-  dispatch(playingRegionIdSet(randomRegionId));
-};
-
 export const {
   gameInit,
   gameReset,

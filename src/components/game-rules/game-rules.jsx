@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { gameStatusSet, nextQuestion } from '../../store/reducer';
+import { gameStatusSet } from '../../store/slice';
+import { nextQuestion } from '../../store/thunk-action';
 import { GameStatus } from '../../const';
 import './game-rules.css';
 
@@ -11,8 +12,8 @@ import Button from '../button/button';
 const GameRules = (props) => {
   const dispatch = useDispatch();
   const onClick = () => {
-    dispatch(gameStatusSet(GameStatus.STARTED));
     dispatch(nextQuestion());
+    dispatch(gameStatusSet(GameStatus.STARTED));
   }
 
   return (

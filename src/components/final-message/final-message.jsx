@@ -1,29 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import './final-message.css';
-
+import { selectScore } from "../../store/selectors";
 import Popup from '../popup/popup';
 import Button from '../button/button';
-import { gameReset, nextQuestion } from '../../store/reducer';
+import { gameReset } from '../../store/slice';
+import { nextQuestion } from '../../store/thunk-action';
+import './final-message.css';
 
 const getReview = (score) => {
   if (score === 100) {
     return `Великолепный результат! Вы превосходно знаете Смоленскую область!`
   }
-
   if (score >= 90) {
     return `Отличный результат! Вы хорошо знаете Смоленскую область.`
   }
-
   if (score >= 80) {
     return `Вполне достойный результат. Вы неплохо знаете Смоленскую область.`
   }
-
   if (score >= 65) {
     return `Средний результат. В целом Вы знаете Смоленскую область, но иногда допускаете ошибки.`
   }
-
   if (score >= 45) {
     return `Слабенько. Вы плохо знаете Смоленскую область.`
   } 
@@ -32,9 +29,9 @@ const getReview = (score) => {
 };
 
 const FinalMessage = () => {
-  const score = useSelector((state) => state.score);
+  const score = useSelector(selectScore);
   const dispatch = useDispatch();
-  const onClick = () => {
+  const restartGame = () => {
     dispatch(gameReset());
     dispatch(nextQuestion());
   };
@@ -45,7 +42,7 @@ const FinalMessage = () => {
         <h2 className="final-message__title">Ваш финальный результат: {score}%</h2>
         <p className="final-message__text">{getReview(score)}
         </p>
-        <Button onClick={onClick}>Попробовать еще раз</Button>
+        <Button onClick={restartGame}>Попробовать еще раз</Button>
       </React.Fragment>
     </Popup>
   ); 

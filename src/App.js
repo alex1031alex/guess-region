@@ -6,24 +6,29 @@ import GameRules from './components/game-rules/game-rules';
 import FinalMessage from './components/final-message/final-message';
 import Info from './components/info/info';
 import Tooltip from './components/tooltip/tooltip';
-import {useState} from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {GameStatus, RegionStatus, ScoresForRightAnswer, Message} from './const';
+import { GameStatus, RegionStatus, ScoresForAnswer, Message } from './const';
+import { nextQuestion } from './store/thunk-action';
+import { 
+  selectGameStatus, 
+  selectPlayingRegion, 
+  selectFailedAttemptsCount 
+} from './store/selectors';
 import {
-  nextQuestion, 
   regionStatusChanged, 
   failedAttemptsCountInc, 
   failedAttemptsCountReset, 
   scoreIncreased 
-} from './store/reducer';
+} from './store/slice';
 
 const SHOW_MESSAGE_TIME = 500;
 
 function App() {
   const [message, setMessage] = useState(null);
-  const gameStatus = useSelector((state) => state.gameStatus);
-  const playingRegion = useSelector((state) => state.entities[state.playingRegionId]);
-  const failedAttemptsCount = useSelector((state) => state.failedAttemptsCount);
+  const gameStatus = useSelector(selectGameStatus);
+  const playingRegion = useSelector(selectPlayingRegion);
+  const failedAttemptsCount = useSelector(selectFailedAttemptsCount);
 
   const dispatch = useDispatch();
 
@@ -47,20 +52,20 @@ function App() {
       switch (failedAttemptsCount) {
         case 0: {
           dispatch(regionStatusChanged(regionId, RegionStatus.FROM_FIRST_TRY));
-          dispatch(scoreIncreased(ScoresForRightAnswer.FROM_FIRST_TRY));
+          dispatch(scoreIncreased(ScoresForAnswer.FROM_FIRST_TRY));
           showMessage(Message.SUCCESS, coordX, coordY);
           break;
         }
         case 1: {
           dispatch(regionStatusChanged(regionId, RegionStatus.FROM_SECOND_TRY));
-          dispatch(scoreIncreased(ScoresForRightAnswer.FROM_SECOND_TRY));
+          dispatch(scoreIncreased(ScoresForAnswer.FROM_SECOND_TRY));
           dispatch(failedAttemptsCountReset());
           showMessage(Message.SUCCESS, coordX, coordY);
           break;
         }
         case 2: {
           dispatch(regionStatusChanged(regionId, RegionStatus.FROM_THIRD_TRY));
-          dispatch(scoreIncreased(ScoresForRightAnswer.FROM_THIRD_TRY));
+          dispatch(scoreIncreased(ScoresForAnswer.FROM_THIRD_TRY));
           dispatch(failedAttemptsCountReset());
           showMessage(Message.SUCCESS, coordX, coordY);
           break;

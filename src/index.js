@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import {store} from "./store/store";
-import {gameInit} from "./store/reducer";
+import {gameInit} from "./store/slice";
 
 store.dispatch(gameInit());
 
