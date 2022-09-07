@@ -6,9 +6,20 @@ export const GameStatus = {
 
 export const RegionStatus = {
   INITIAL: `initial`,
-  GUESSED_ON_FIRST_TRY: `on-first`,
-  GUESSED_ON_SECOND_TRY: `on-second`,
-  GUESSED_ON_THIRD_TRY: `on-third`,
+  FROM_FIRST_TRY: `on-first`,
+  FROM_SECOND_TRY: `on-second`,
+  FROM_THIRD_TRY: `on-third`,
   FAILED: `failed`,
   UNGUESSED: `unguessed`
+};
+
+export const ScoresForAnswer = {
+  FROM_FIRST_TRY: 4,
+  FROM_SECOND_TRY: 3,
+  FROM_THIRD_TRY: 1
+};
+
+export const Message = {
+  SUCCESS: `Вы угадали!`,
+  MISTAKE: `Нет, это не он!`
 };

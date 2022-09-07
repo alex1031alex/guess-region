@@ -6,83 +6,41 @@ import GameRules from './components/game-rules/game-rules';
 import FinalMessage from './components/final-message/final-message';
 import Info from './components/info/info';
 import Tooltip from './components/tooltip/tooltip';
-import {useState, useEffect} from 'react';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { GameStatus, RegionStatus, ScoresForAnswer, Message } from './const';
+import { nextQuestion } from './store/thunk-action';
+import { 
+  selectGameStatus, 
+  selectPlayingRegion, 
+  selectFailedAttemptsCount 
+} from './store/selectors';
+import {
+  regionStatusChanged, 
+  failedAttemptsCountInc, 
+  failedAttemptsCountReset, 
+  scoreIncreased 
+} from './store/slice';
 
-import {GameStatus, RegionStatus} from './const';
-import {regionIds, createIdToStatusMap} from './data/region-data';
-
-const SUCCESS_MESSAGE = `Вы угадали!`;
-const MISTAKE_MESSAGE = `Нет, это не он!`;
 const SHOW_MESSAGE_TIME = 500;
-const TIMEOUT_BEFORE_GAME_FINISH = 600;
-const PersentageForRightAnswer = {
-  FROM_FIRST_TIME: 4,
-  FROM_SECOND_TIME: 3,
-  FROM_THIRD_TIME: 1
-};
-
-let regionsInGame = [...regionIds];
-let failedTryCount = 0;
-const initialRegionsStatus = createIdToStatusMap();
-
-const getRandomRegion = () => {
-  const maxIndex = regionsInGame.length - 1;
-  const randomIndex = Math.floor(Math.random() * (maxIndex + 1));
-
-  return regionsInGame[randomIndex];
-};
 
 function App() {
-  const [gameStatus, setGameStatus] = useState(GameStatus.UNSTARTED);
-  const [regionsStatus, setRegionsStatus] = useState({...initialRegionsStatus});
-  const [playingRegion, setPlayingRegion] = useState(null);
   const [message, setMessage] = useState(null);
-  const [score, setScore] = useState(0);
+  const gameStatus = useSelector(selectGameStatus);
+  const playingRegion = useSelector(selectPlayingRegion);
+  const failedAttemptsCount = useSelector(selectFailedAttemptsCount);
 
-  const excludeRegionFromGame = (region) => {
-    regionsInGame = regionsInGame.filter((regionInGame) => regionInGame !== region);
-  };
-
-  useEffect(() => {
-    if (regionsInGame.length === 0) {
-      setTimeout(finishGame, TIMEOUT_BEFORE_GAME_FINISH);
-    }
-  }, [regionsStatus]);
-
-  const getRegionStatusById = (id) => {
-    return regionsStatus[id];
-  };
-
-  const startGame = () => {
-    setGameStatus(GameStatus.STARTED);
-    setPlayingRegion(getRandomRegion());
-  };
-
-  const finishGame = () => {
-    setGameStatus(GameStatus.FINISHED);
-  };
+  const dispatch = useDispatch();
 
   const showMessage = (text, coordX, coordY) => {
     const x = `${coordX}px`;
     const y = `${coordY}px`;
 
     setMessage({text, x, y});
- 
+
     setTimeout(() => {
       setMessage(null);
     }, SHOW_MESSAGE_TIME);
-  };
-
-  const restartGame = () => {
-    setGameStatus(GameStatus.UNSTARTED);
-
-    regionsInGame = [...regionIds];
-    failedTryCount = 0;
-
-    setRegionsStatus({...initialRegionsStatus});
-    setPlayingRegion(null);
-    setMessage(null);
-    setScore(0);
   };
 
   const handleRegionClick = (regionId, coordX, coordY) => {
@@ -90,65 +48,42 @@ function App() {
       return;
     }
 
-    const playingRegionStatus = regionsStatus[playingRegion];
-
-    if (playingRegionStatus !== RegionStatus.INITIAL && 
-      playingRegionStatus !== RegionStatus.FAILED) {
-        return;
-      }
-
-    if (playingRegion === regionId) {
-      switch (failedTryCount) {
+    if (regionId === playingRegion.id) {
+      switch (failedAttemptsCount) {
         case 0: {
-          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_FIRST_TRY});
-          showMessage(SUCCESS_MESSAGE, coordX, coordY);
-          setScore((currentScore) => {
-            return currentScore + PersentageForRightAnswer.FROM_FIRST_TIME;
-          });
+          dispatch(regionStatusChanged(regionId, RegionStatus.FROM_FIRST_TRY));
+          dispatch(scoreIncreased(ScoresForAnswer.FROM_FIRST_TRY));
+          showMessage(Message.SUCCESS, coordX, coordY);
           break;
         }
         case 1: {
-          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_SECOND_TRY});
-          showMessage(SUCCESS_MESSAGE, coordX, coordY);
-          setScore((currentScore) => {
-            return currentScore + PersentageForRightAnswer
-            .FROM_SECOND_TIME;
-          });
+          dispatch(regionStatusChanged(regionId, RegionStatus.FROM_SECOND_TRY));
+          dispatch(scoreIncreased(ScoresForAnswer.FROM_SECOND_TRY));
+          dispatch(failedAttemptsCountReset());
+          showMessage(Message.SUCCESS, coordX, coordY);
           break;
         }
         case 2: {
-          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.GUESSED_ON_THIRD_TRY});
-          showMessage(SUCCESS_MESSAGE, coordX, coordY);
-          setScore((currentScore) => {
-            return currentScore + PersentageForRightAnswer.FROM_THIRD_TIME;
-          });
+          dispatch(regionStatusChanged(regionId, RegionStatus.FROM_THIRD_TRY));
+          dispatch(scoreIncreased(ScoresForAnswer.FROM_THIRD_TRY));
+          dispatch(failedAttemptsCountReset());
+          showMessage(Message.SUCCESS, coordX, coordY);
           break;
         }
         default: {
-          setRegionsStatus({...regionsStatus, [playingRegion]: RegionStatus.UNGUESSED});
+          dispatch(regionStatusChanged(regionId, RegionStatus.UNGUESSED));
+          dispatch(failedAttemptsCountReset());
         }
       }
 
-      excludeRegionFromGame(playingRegion);
-      failedTryCount = 0;
-
-      if (regionsInGame.length !== 0) {
-        setPlayingRegion(getRandomRegion());
+      dispatch(nextQuestion());
+    } else {
+      if (playingRegion.status === RegionStatus.FAILED) {
+        return;
       }
-      
-      return;
-    }
 
-    if (playingRegionStatus === RegionStatus.FAILED) {
-      return;
-    }
-
-    showMessage(MISTAKE_MESSAGE, coordX, coordY);
-    failedTryCount++;
-
-    if (failedTryCount >= 3) {
-      setRegionsStatus(
-        {...regionsStatus, [playingRegion]: RegionStatus.FAILED});
+      showMessage(Message.MISTAKE, coordX, coordY);
+      dispatch(failedAttemptsCountInc());
     }
   };
 
@@ -156,30 +91,15 @@ function App() {
     <div className="app">
       {gameStatus !== GameStatus.STARTED && <Header />}
       <main className="app__main">
-        <Map handleRegionClick={handleRegionClick} getRegionStatus={getRegionStatusById} />
-        {gameStatus === GameStatus.UNSTARTED ?
-          <GameRules onStartButtonClick={startGame} /> : ``
-        }
-        {gameStatus !== GameStatus.UNSTARTED ? 
-          <Info
-            playingRegionId={playingRegion}
-            isGameFinished={gameStatus===GameStatus.FINISHED}
-            score={score}
-          /> : ``
-        }
-        {
-          gameStatus === GameStatus.FINISHED ?
-          <FinalMessage
-            onRestartButtonClick={restartGame}
-            score={score}
-          ></FinalMessage> : ``
-        }
+        <Map handleRegionClick={handleRegionClick} />
+        {gameStatus === GameStatus.UNSTARTED ? <GameRules /> : ``}
+        {gameStatus !== GameStatus.UNSTARTED ? <Info /> : ``}
+        {gameStatus === GameStatus.FINISHED ? <FinalMessage /> : ``}
         {message ? <Tooltip 
           message={message.text} 
           coordX={message.x} 
           coordY={message.y} 
         /> : ``}
-
       </main>
       <Footer />
     </div>

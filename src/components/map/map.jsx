@@ -9,7 +9,7 @@ import {regionData} from '../../data/region-data.js';
 const {outlines} = regionData;
 
 const Map = (props) => {
-  const {handleRegionClick, getRegionStatus} = props;
+  const {handleRegionClick} = props;
 
   return (
     <section className="map">
@@ -19,7 +19,6 @@ const Map = (props) => {
             key={outline.id}
             id={outline.id}
             onRegionClick={handleRegionClick}
-            getMyStatus={getRegionStatus}
           >
             <path d={outline.d}></path>
           </Region>

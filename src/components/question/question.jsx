@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { selectPlayingRegionId } from '../../store/selectors';
 
 import './question.css';
 
@@ -7,12 +9,12 @@ import {createIdToNameMap} from '../../data/region-data';
 
 const idToName = createIdToNameMap();
 
-const Question = (props) => {
-  const {playingRegionId} = props;
+const Question = () => {
+  const playingRegionId = useSelector(selectPlayingRegionId);
 
   return (
     <p className="question">
-      Где находится {idToName[playingRegionId]} район?
+      {playingRegionId && `Где находится ${idToName[playingRegionId]} район?`}
     </p>
   );
 };
