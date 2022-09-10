@@ -17,7 +17,7 @@ const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    gameInit(state) {
+    initGame(state) {
       const newEntities = {};
 
       regionData.outlines.forEach((it) => {
@@ -31,11 +31,11 @@ const gameSlice = createSlice({
 
       state.entities = newEntities;
     },
-    gameStarted(state, action) {
+    startGame(state, action) {
       state.gameStatus = GameStatus.STARTED;
       state.playingRegionId = action.payload;
     },
-    gameReset(state) {
+    resetGame(state) {
       state.gameStatus = GameStatus.STARTED;
       state.playingRegionId = null;
       state.failedAttemptsCount = 0;
@@ -44,6 +44,9 @@ const gameSlice = createSlice({
       Object.values(state.entities).forEach((entity) => {
         entity.status = RegionStatus.INITIAL;
       })
+    },
+    finishGame(state, action) {
+      state.gameStatus = GameStatus.FINISHED;
     },
     setSuccess(state) {
       const id = state.playingRegionId;
@@ -78,54 +81,17 @@ const gameSlice = createSlice({
       state.failedAttemptsCount = 0;
       state.playingRegionId = action.payload;
     },
-    gameStatusSet(state, action) {
-      state.gameStatus = action.payload;
-    },
-    playingRegionIdSet(state, action) {
-      state.playingRegionId = action.payload;
-    },
-    regionStatusChanged: {
-      reducer(state, action) {
-        const { id, status } = action.payload;
-        state.entities[id].status = status;
-      },
-      prepare(id, status) {
-        return {
-          payload: {
-            id, status
-          }
-        }
-      }
-    },
-    failedAttemptsCountInc(state) {
-      state.failedAttemptsCount++;
-
-      if (state.failedAttemptsCount === 3) {
-        state.entities[state.playingRegionId].status = RegionStatus.FAILED;
-      }
-    },
-    failedAttemptsCountReset(state) {
-      state.failedAttemptsCount = 0;
-    },
-    scoreIncreased(state, action) {
-      state.score += action.payload;
-    }
   }
 });
 
 export const {
-  gameInit,
-  gameStarted,
-  gameReset,
-  gameStatusSet,
+  initGame,
+  startGame,
+  resetGame,
+  finishGame,
   setSuccess,
   setFail,
   goToNextQuestion,
-  playingRegionIdSet,
-  failedAttemptsCountInc,
-  failedAttemptsCountReset,
-  regionStatusChanged,
-  scoreIncreased,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

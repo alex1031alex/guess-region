@@ -1,13 +1,12 @@
-import { gameStatusSet, goToNextQuestion, gameStarted } from "./slice";
+import { goToNextQuestion, startGame, finishGame } from "./slice";
 import { selectPlayingRegions } from "./selectors";
 import { getRandomElement } from "../utils";
-import { GameStatus } from "../const";
 
 export const goToNextQuestionThunk = () => (dispatch, getState) => {
   const activeRegions = selectPlayingRegions(getState());
 
   if (activeRegions.length === 0) {
-    dispatch(gameStatusSet(GameStatus.FINISHED));
+    dispatch(finishGame());
     return;
   }
 
@@ -18,5 +17,5 @@ export const goToNextQuestionThunk = () => (dispatch, getState) => {
 export const gameStartedTnunk = () => (dispatch, getState) => {
   const ids = getState().ids;
   const randomId = getRandomElement(ids);
-  dispatch(gameStarted(randomId));
+  dispatch(startGame(randomId));
 };

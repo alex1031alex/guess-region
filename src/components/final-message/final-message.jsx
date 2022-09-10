@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectScore } from "../../store/selectors";
 import Popup from '../popup/popup';
 import Button from '../button/button';
-import { gameReset } from '../../store/slice';
+import { resetGame } from '../../store/slice';
 import { goToNextQuestionThunk } from '../../store/actions';
 import './final-message.css';
 
@@ -31,7 +31,7 @@ const FinalMessage = () => {
   const score = useSelector(selectScore);
   const dispatch = useDispatch();
   const restartGame = () => {
-    dispatch(gameReset());
+    dispatch(resetGame());
     dispatch(goToNextQuestionThunk());
   };
 
