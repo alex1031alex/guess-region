@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { selectPlayingRegionId } from '../../store/selectors';
 
@@ -17,10 +16,6 @@ const Question = () => {
       {playingRegionId && `Где находится ${idToName[playingRegionId]} район?`}
     </p>
   );
-};
-
-Question.propTypes = {
-  playingRegionId: PropTypes.string,
 };
 
 export default Question;

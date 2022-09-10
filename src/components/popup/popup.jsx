@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './popup.css';
 
 const Popup = (props) => {
@@ -12,12 +11,6 @@ const Popup = (props) => {
       </div>
     </section>
   ); 
-};
-
-Popup.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.element.isRequired,
-  ]),
 };
 
 export default Popup;

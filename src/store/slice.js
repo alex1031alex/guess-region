@@ -1,7 +1,6 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { GameStatus, RegionStatus } from "../const";
+import { GameStatus, RegionStatus, ScoresForAnswer } from "../const";
 import { regionData } from "../data/region-data";
-import { getRandomElement } from "../utils";
 
 const adapter = createEntityAdapter({
   selectId: (region) => region.id
@@ -14,8 +13,8 @@ export const initialState = adapter.getInitialState({
   score: 0,
 });
 
-const rootSlice = createSlice({
-  name: "root",
+const gameSlice = createSlice({
+  name: "game",
   initialState,
   reducers: {
     gameInit(state) {
@@ -32,6 +31,10 @@ const rootSlice = createSlice({
 
       state.entities = newEntities;
     },
+    gameStarted(state, action) {
+      state.gameStatus = GameStatus.STARTED;
+      state.playingRegionId = action.payload;
+    },
     gameReset(state) {
       state.gameStatus = GameStatus.STARTED;
       state.playingRegionId = null;
@@ -41,6 +44,39 @@ const rootSlice = createSlice({
       Object.values(state.entities).forEach((entity) => {
         entity.status = RegionStatus.INITIAL;
       })
+    },
+    setSuccess(state) {
+      const id = state.playingRegionId;
+      switch (state.failedAttemptsCount) {
+        case 0: {
+          state.entities[id].status = RegionStatus.FROM_FIRST_TRY;
+          state.score += ScoresForAnswer.FROM_FIRST_TRY;
+          break;
+        }
+        case 1: {
+          state.entities[id].status = RegionStatus.FROM_SECOND_TRY;
+          state.score += ScoresForAnswer.FROM_SECOND_TRY;
+          break;
+        }
+        case 2: {
+          state.entities[id].status = RegionStatus.FROM_THIRD_TRY;
+          state.score += ScoresForAnswer.FROM_THIRD_TRY;
+          break;
+        }
+        default: {
+          state.entities[id].status = RegionStatus.UNGUESSED;
+        }
+      }
+    },
+    setFail(state) {
+      state.failedAttemptsCount++;
+      if (state.failedAttemptsCount === 3) {
+        state.entities[state.playingRegionId].status = RegionStatus.FAILED;
+      }
+    },
+    goToNextQuestion(state, action) {
+      state.failedAttemptsCount = 0;
+      state.playingRegionId = action.payload;
     },
     gameStatusSet(state, action) {
       state.gameStatus = action.payload;
@@ -79,13 +115,17 @@ const rootSlice = createSlice({
 
 export const {
   gameInit,
+  gameStarted,
   gameReset,
   gameStatusSet,
+  setSuccess,
+  setFail,
+  goToNextQuestion,
   playingRegionIdSet,
   failedAttemptsCountInc,
   failedAttemptsCountReset,
   regionStatusChanged,
   scoreIncreased,
-} = rootSlice.actions;
+} = gameSlice.actions;
 
-export default rootSlice.reducer;
+export default gameSlice.reducer;
