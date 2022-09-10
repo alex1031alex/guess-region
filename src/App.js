@@ -17,6 +17,7 @@ const SHOW_MESSAGE_TIME = 500;
 
 function App() {
   const [message, setMessage] = useState(null);
+  const [isBlocked, setIsBlocked] = useState(false);
   const gameStatus = useSelector(selectGameStatus);
   const isGame = gameStatus === GameStatus.STARTED;
   const playingRegion = useSelector(selectPlayingRegion);
@@ -28,20 +29,30 @@ function App() {
     const y = `${coordY}px`;
 
     setMessage({text, x, y});
-
-    setTimeout(() => {
-      setMessage(null);
-    }, SHOW_MESSAGE_TIME);
   };
 
   const handleRegionClick = (regionId, coordX, coordY) => {
+    if (isBlocked) {
+      return;
+    }
+
+    setIsBlocked(true);
+
     if (regionId === playingRegion.id) {
       showMessage(Message.SUCCESS, coordX, coordY);
-      dispatch(setSuccess());
-      dispatch(goToNextQuestionThunk());
+      setTimeout(() => {
+        setMessage(null);
+        dispatch(setSuccess());
+        dispatch(goToNextQuestionThunk());
+        setIsBlocked(false);
+      }, SHOW_MESSAGE_TIME);
     } else {
       showMessage(Message.MISTAKE, coordX, coordY);
-      dispatch(setFail());
+      setTimeout(() => {
+        setMessage(null);
+        dispatch(setFail());
+        setIsBlocked(false);
+      }, SHOW_MESSAGE_TIME);
     }
   };
 
