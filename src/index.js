@@ -5,9 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import {store} from "./store/store";
-import {gameInit} from "./store/slice";
+import {initGame} from "./store/slice";
 
-store.dispatch(gameInit());
+store.dispatch(initGame());
 
 ReactDOM.render(
   <React.StrictMode>

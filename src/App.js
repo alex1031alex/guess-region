@@ -8,27 +8,19 @@ import Info from './components/info/info';
 import Tooltip from './components/tooltip/tooltip';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { GameStatus, RegionStatus, ScoresForAnswer, Message } from './const';
-import { nextQuestion } from './store/thunk-action';
-import { 
-  selectGameStatus, 
-  selectPlayingRegion, 
-  selectFailedAttemptsCount 
-} from './store/selectors';
-import {
-  regionStatusChanged, 
-  failedAttemptsCountInc, 
-  failedAttemptsCountReset, 
-  scoreIncreased 
-} from './store/slice';
+import { GameStatus, Message } from './const';
+import { goToNextQuestionThunk } from './store/actions';
+import { selectGameStatus, selectPlayingRegion } from './store/selectors';
+import { setSuccess, setFail } from './store/slice';
 
 const SHOW_MESSAGE_TIME = 500;
 
 function App() {
   const [message, setMessage] = useState(null);
+  const [isBlocked, setIsBlocked] = useState(false);
   const gameStatus = useSelector(selectGameStatus);
+  const isGame = gameStatus === GameStatus.STARTED;
   const playingRegion = useSelector(selectPlayingRegion);
-  const failedAttemptsCount = useSelector(selectFailedAttemptsCount);
 
   const dispatch = useDispatch();
 
@@ -37,53 +29,30 @@ function App() {
     const y = `${coordY}px`;
 
     setMessage({text, x, y});
-
-    setTimeout(() => {
-      setMessage(null);
-    }, SHOW_MESSAGE_TIME);
   };
 
   const handleRegionClick = (regionId, coordX, coordY) => {
-    if (gameStatus !== GameStatus.STARTED) {
+    if (isBlocked) {
       return;
     }
 
+    setIsBlocked(true);
+
     if (regionId === playingRegion.id) {
-      switch (failedAttemptsCount) {
-        case 0: {
-          dispatch(regionStatusChanged(regionId, RegionStatus.FROM_FIRST_TRY));
-          dispatch(scoreIncreased(ScoresForAnswer.FROM_FIRST_TRY));
-          showMessage(Message.SUCCESS, coordX, coordY);
-          break;
-        }
-        case 1: {
-          dispatch(regionStatusChanged(regionId, RegionStatus.FROM_SECOND_TRY));
-          dispatch(scoreIncreased(ScoresForAnswer.FROM_SECOND_TRY));
-          dispatch(failedAttemptsCountReset());
-          showMessage(Message.SUCCESS, coordX, coordY);
-          break;
-        }
-        case 2: {
-          dispatch(regionStatusChanged(regionId, RegionStatus.FROM_THIRD_TRY));
-          dispatch(scoreIncreased(ScoresForAnswer.FROM_THIRD_TRY));
-          dispatch(failedAttemptsCountReset());
-          showMessage(Message.SUCCESS, coordX, coordY);
-          break;
-        }
-        default: {
-          dispatch(regionStatusChanged(regionId, RegionStatus.UNGUESSED));
-          dispatch(failedAttemptsCountReset());
-        }
-      }
-
-      dispatch(nextQuestion());
+      showMessage(Message.SUCCESS, coordX, coordY);
+      setTimeout(() => {
+        setMessage(null);
+        dispatch(setSuccess());
+        dispatch(goToNextQuestionThunk());
+        setIsBlocked(false);
+      }, SHOW_MESSAGE_TIME);
     } else {
-      if (playingRegion.status === RegionStatus.FAILED) {
-        return;
-      }
-
       showMessage(Message.MISTAKE, coordX, coordY);
-      dispatch(failedAttemptsCountInc());
+      setTimeout(() => {
+        setMessage(null);
+        dispatch(setFail());
+        setIsBlocked(false);
+      }, SHOW_MESSAGE_TIME);
     }
   };
 
@@ -91,7 +60,7 @@ function App() {
     <div className="app">
       {gameStatus !== GameStatus.STARTED && <Header />}
       <main className="app__main">
-        <Map handleRegionClick={handleRegionClick} />
+        <Map handleRegionClick={isGame ? handleRegionClick : () => {}} />
         {gameStatus === GameStatus.UNSTARTED ? <GameRules /> : ``}
         {gameStatus !== GameStatus.UNSTARTED ? <Info /> : ``}
         {gameStatus === GameStatus.FINISHED ? <FinalMessage /> : ``}

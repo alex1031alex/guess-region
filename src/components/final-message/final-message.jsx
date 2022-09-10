@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectScore } from "../../store/selectors";
 import Popup from '../popup/popup';
 import Button from '../button/button';
-import { gameReset } from '../../store/slice';
-import { nextQuestion } from '../../store/thunk-action';
+import { resetGame } from '../../store/slice';
+import { goToNextQuestionThunk } from '../../store/actions';
 import './final-message.css';
 
 const getReview = (score) => {
@@ -32,8 +31,8 @@ const FinalMessage = () => {
   const score = useSelector(selectScore);
   const dispatch = useDispatch();
   const restartGame = () => {
-    dispatch(gameReset());
-    dispatch(nextQuestion());
+    dispatch(resetGame());
+    dispatch(goToNextQuestionThunk());
   };
 
   return (
@@ -46,11 +45,6 @@ const FinalMessage = () => {
       </React.Fragment>
     </Popup>
   ); 
-};
-
-FinalMessage.propTypes = {
-  onRestartButtonClick: PropTypes.func,
-  score: PropTypes.number,
 };
 
 export default FinalMessage;

@@ -1,7 +1,6 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { GameStatus, RegionStatus } from "../const";
+import { GameStatus, RegionStatus, ScoresForAnswer } from "../const";
 import { regionData } from "../data/region-data";
-import { getRandomElement } from "../utils";
 
 const adapter = createEntityAdapter({
   selectId: (region) => region.id
@@ -14,11 +13,11 @@ export const initialState = adapter.getInitialState({
   score: 0,
 });
 
-const rootSlice = createSlice({
-  name: "root",
+const gameSlice = createSlice({
+  name: "game",
   initialState,
   reducers: {
-    gameInit(state) {
+    initGame(state) {
       const newEntities = {};
 
       regionData.outlines.forEach((it) => {
@@ -32,7 +31,11 @@ const rootSlice = createSlice({
 
       state.entities = newEntities;
     },
-    gameReset(state) {
+    startGame(state, action) {
+      state.gameStatus = GameStatus.STARTED;
+      state.playingRegionId = action.payload;
+    },
+    resetGame(state) {
       state.gameStatus = GameStatus.STARTED;
       state.playingRegionId = null;
       state.failedAttemptsCount = 0;
@@ -42,50 +45,53 @@ const rootSlice = createSlice({
         entity.status = RegionStatus.INITIAL;
       })
     },
-    gameStatusSet(state, action) {
-      state.gameStatus = action.payload;
+    finishGame(state, action) {
+      state.gameStatus = GameStatus.FINISHED;
     },
-    playingRegionIdSet(state, action) {
-      state.playingRegionId = action.payload;
-    },
-    regionStatusChanged: {
-      reducer(state, action) {
-        const { id, status } = action.payload;
-        state.entities[id].status = status;
-      },
-      prepare(id, status) {
-        return {
-          payload: {
-            id, status
-          }
+    setSuccess(state) {
+      const id = state.playingRegionId;
+      switch (state.failedAttemptsCount) {
+        case 0: {
+          state.entities[id].status = RegionStatus.FROM_FIRST_TRY;
+          state.score += ScoresForAnswer.FROM_FIRST_TRY;
+          break;
+        }
+        case 1: {
+          state.entities[id].status = RegionStatus.FROM_SECOND_TRY;
+          state.score += ScoresForAnswer.FROM_SECOND_TRY;
+          break;
+        }
+        case 2: {
+          state.entities[id].status = RegionStatus.FROM_THIRD_TRY;
+          state.score += ScoresForAnswer.FROM_THIRD_TRY;
+          break;
+        }
+        default: {
+          state.entities[id].status = RegionStatus.UNGUESSED;
         }
       }
     },
-    failedAttemptsCountInc(state) {
+    setFail(state) {
       state.failedAttemptsCount++;
-
       if (state.failedAttemptsCount === 3) {
         state.entities[state.playingRegionId].status = RegionStatus.FAILED;
       }
     },
-    failedAttemptsCountReset(state) {
+    goToNextQuestion(state, action) {
       state.failedAttemptsCount = 0;
+      state.playingRegionId = action.payload;
     },
-    scoreIncreased(state, action) {
-      state.score += action.payload;
-    }
   }
 });
 
 export const {
-  gameInit,
-  gameReset,
-  gameStatusSet,
-  playingRegionIdSet,
-  failedAttemptsCountInc,
-  failedAttemptsCountReset,
-  regionStatusChanged,
-  scoreIncreased,
-} = rootSlice.actions;
+  initGame,
+  startGame,
+  resetGame,
+  finishGame,
+  setSuccess,
+  setFail,
+  goToNextQuestion,
+} = gameSlice.actions;
 
-export default rootSlice.reducer;
+export default gameSlice.reducer;

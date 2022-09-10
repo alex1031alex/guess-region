@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { selectScore } from '../../store/selectors';
 import './score.css';
@@ -17,10 +16,6 @@ const Score = () => {
       </p>
     </div>
   );
-};
-
-Score.propTypes = {
-  value: PropTypes.number,
 };
 
 export default Score;

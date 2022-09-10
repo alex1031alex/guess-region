@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import './region.css';
 import { RegionStatus } from '../../const';
 
@@ -24,13 +23,6 @@ const Region = (props) => {
       {children}
     </g>
   ); 
-};
-
-Region.propTypes = {
-  children: PropTypes.element.isRequired,
-  id: PropTypes.string,
-  onRegionClick: PropTypes.func,
-  getMyStatus: PropTypes.func,
 };
 
 export default Region;

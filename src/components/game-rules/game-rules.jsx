@@ -1,19 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { gameStatusSet } from '../../store/slice';
-import { nextQuestion } from '../../store/thunk-action';
-import { GameStatus } from '../../const';
+import { gameStartedTnunk } from '../../store/actions';
 import './game-rules.css';
 
 import Popup from '../popup/popup';
 import Button from '../button/button';
 
-const GameRules = (props) => {
+const GameRules = () => {
   const dispatch = useDispatch();
   const onClick = () => {
-    dispatch(nextQuestion());
-    dispatch(gameStatusSet(GameStatus.STARTED));
+    dispatch(gameStartedTnunk());
   }
 
   return (
@@ -29,10 +25,6 @@ const GameRules = (props) => {
       </React.Fragment>
     </Popup>
   ); 
-};
-
-GameRules.propTypes = {
-  onStartButtonClick: PropTypes.func,
 };
 
 export default GameRules;
